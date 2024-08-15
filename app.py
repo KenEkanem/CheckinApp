@@ -4,13 +4,13 @@ import requests
 app = Flask(__name__)
 
 # Your Google Apps Script URL
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpTbTcB20cG6Vv9oXNpxMyaOWlL-y6jPHuPctoeIzi_bgSHv62Zl61UZct5YAjyxkzfw/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpsm_fUzUGOCWclZmshxcgBUC6WndS3S4zl7zYvIR9TIuxoVe_CLTC-3l4achAvB0avQ/exec"
 
 @app.route('/checkin/<barcode>')
 def checkin(barcode):
     try:
         # Send a request to the Apps Script web app with barcode
-        response = requests.get(f"{GOOGLE_SCRIPT_URL}?barcode={barcode}")
+        response = requests.get(GOOGLE_SCRIPT_URL, params={'barcode': barcode})
         guest = response.json()
 
         if not guest:
@@ -29,11 +29,11 @@ def checkin_by_email():
 
         # Send request to the Apps Script to search by email
         try:
-            response = requests.get(f"{GOOGLE_SCRIPT_URL}?email={email}")
+            # Construct the URL with the email parameter properly
+            response = requests.get(GOOGLE_SCRIPT_URL, params={'email': email})
             print(f"Response status code: {response.status_code}")
             print(f"Response content: {response.text}")
 
-            # Check if response content is empty
             if not response.text.strip():
                 return "No data returned from Apps Script", 500
 
@@ -50,6 +50,6 @@ def checkin_by_email():
 
     return render_template('email_checkin.html')
 
+
 if __name__ == '__main__':
-    # Run the Flask application with a specified port (e.g., 8080)
-    app.run(debug=True, port=5004)
+    app.run(debug=True, port=8080)
