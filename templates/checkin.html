@@ -4,15 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check-in</title>
-    <link rel="stylesheet" href="/templates/css/checkin.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: left; /* Align text to the left */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .color-box {
+            width: 50px;
+            height: 50px;
+            margin-left: 20px;
+            display: inline-block;
+            background-color: {{ guest.color_code }};
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .back-btn {
+            background-color: #f44336;
+        }
+        .back-btn:hover {
+            background-color: #e53935;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Congratulations and Welcome to the Event!</h1>
-        <div class="color-box" style="background-color: {{ guest.color_code }};"></div>
+        <div class="header">
+            <h1>Congratulations and Welcome to the Event!</h1>
+            <div class="color-box"></div>
+        </div>
         <p><strong>Name:</strong> {{ guest.name }}</p>
         <p><strong>Unique ID:</strong> {{ guest.unique_id }}</p>
-        <p><strong>XN:</strong> {{ guest.color_code }}</p>
+        <p><strong>Color Code:</strong> {{ guest.color_code }}</p>
         <button class="back-btn" onclick="window.history.back()">Go Back</button>
     </div>
 </body>
