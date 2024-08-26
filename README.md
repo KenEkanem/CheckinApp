@@ -1,5 +1,13 @@
 
+Setting the FLASK_APP environment variable is essential for Flask to locate and run your application
+Setting the Variable:
 
+
+- Linux/Mac
+```export FLASK_APP=app.py```
+
+- Windows (cmd)
+```set FLASK_APP=app.py```
 
 
 #### - Install pm2 globally

@@ -1,2 +1,4 @@
 appscript.js
-venv/
+
+*.pyc
+
