@@ -14,7 +14,7 @@ def checkin(barcode):
         guest = response.json()
 
         if not guest:
-            return "Guest not found!", 404
+            return render_template('guest_not_found.html'), 404
 
         # Render the guest information
         return render_template('checkin.html', guest=guest)
@@ -40,7 +40,7 @@ def checkin_by_email():
             guest = response.json()
 
             if not guest:
-                return "Guest not found!", 404
+                return render_template('guest_not_found.html'), 404
 
             # Render the guest information
             return render_template('checkin.html', guest=guest)
@@ -50,6 +50,9 @@ def checkin_by_email():
 
     return render_template('email_checkin.html')
 
+@app.route('/static/css/checkin.css')
+def css_test():
+    return "Static file is accessible"
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True, port=5003)
