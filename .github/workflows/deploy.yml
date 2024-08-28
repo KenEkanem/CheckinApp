@@ -1,0 +1,39 @@
+name: Deploy Flask App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.4'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.17.0' 
+
+    - name: Install PM2 globally
+      run: npm install pm2 -g
+
+    - name: Install Python dependencies
+      run: pip install -r requirements.txt
+
+    - name: Start Flask app with PM2
+      run: pm2 start app.py
+
+    - name: Save PM2 process list
+      run: pm2 save
+
+    - name: List PM2 processes
+      run: pm2 list
