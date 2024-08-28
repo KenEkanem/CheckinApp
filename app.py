@@ -13,11 +13,11 @@ def checkin_by_barcode():
         unique_id = request.args.get('unique_id')
         email = request.args.get('email')
 
-        # Ensure both barcode and email are provided
+        # Ensures both barcode and email are provided
         if not unique_id or not email:
             return "unique_id and email are required", 400
 
-        # Send request to the Apps Script to search by barcode and email
+        # Sends request to the Apps Script to search by barcode and email
         try:
             response = requests.get(GOOGLE_SCRIPT_URL, params={'unique_id': unique_id, 'email': email})
             print(f"Response status code: {response.status_code}")
@@ -34,7 +34,7 @@ def checkin_by_barcode():
             if not guest:
                 return render_template('guest_not_found.html'), 404
 
-            # Render the guest information
+            # Renders the guest information
             return render_template('checkin.html', guest=guest)
         except Exception as e:
             return f"Error: {str(e)}", 500
@@ -48,7 +48,7 @@ def checkin_by_email():
     if request.method == 'POST':
         email = request.form.get('email')
 
-        # Send request to the Apps Script to search by email
+        # Sends request to the Apps Script to search by email
         try:
             # Construct the URL with the email parameter properly
             response = requests.get(GOOGLE_SCRIPT_URL, params={'email': email})
@@ -63,7 +63,7 @@ def checkin_by_email():
             if not guest:
                 return render_template('guest_not_found.html'), 404
 
-            # Render the guest information
+            # Renders the guest information
             return render_template('checkin.html', guest=guest)
 
         except Exception as e:
