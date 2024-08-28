@@ -4,23 +4,44 @@ import requests
 app = Flask(__name__)
 
 # Your Google Apps Script URL
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpsm_fUzUGOCWclZmshxcgBUC6WndS3S4zl7zYvIR9TIuxoVe_CLTC-3l4achAvB0avQ/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8o0uVWqb809GKNUv7n1i5ESGLR3F8U_vTwLH7rSYlqPs_T0jK6Kj1o-ZXF6iPlEbqig/exec"
 
-@app.route('/checkin/<barcode>')
-def checkin(barcode):
-    try:
-        # Send a request to the Apps Script web app with barcode
-        response = requests.get(GOOGLE_SCRIPT_URL, params={'barcode': barcode})
-        guest = response.json()
+@app.route('/checkin-by-barcode', methods=['GET', 'POST'])
+def checkin_by_barcode():
+    if request.method == 'GET':
+        # Extract barcode and email from query parameters
+        unique_id = request.args.get('unique_id')
+        email = request.args.get('email')
 
-        if not guest:
-            return render_template('guest_not_found.html'), 404
+        # Ensure both barcode and email are provided
+        if not unique_id or not email:
+            return "unique_id and email are required", 400
 
-        # Render the guest information
-        return render_template('checkin.html', guest=guest)
+        # Send request to the Apps Script to search by barcode and email
+        try:
+            response = requests.get(GOOGLE_SCRIPT_URL, params={'unique_id': unique_id, 'email': email})
+            print(f"Response status code: {response.status_code}")
+            print(f"Response content: {response.text}")
 
-    except Exception as e:
-        return f"Error: {str(e)}", 500
+            if response.status_code != 200:
+                return f"Error: Received status code {response.status_code} from Apps Script", 500
+
+            if not response.text.strip():
+                return "No data returned from Apps Script", 500
+
+            guest = response.json()
+
+            if not guest:
+                return render_template('guest_not_found.html'), 404
+
+            # Render the guest information
+            return render_template('checkin.html', guest=guest)
+        except Exception as e:
+            return f"Error: {str(e)}", 500
+
+    # If not a GET request, return the form
+    return render_template('email_checkin.html')
+
 
 @app.route('/checkin-by-email', methods=['GET', 'POST'])
 def checkin_by_email():
@@ -55,4 +76,4 @@ def css_test():
     return "Static file is accessible"
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5003)
+    app.run('0.0.0.0', debug=True, port=5003)
