@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # Your Google Apps Script URL
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8o0uVWqb809GKNUv7n1i5ESGLR3F8U_vTwLH7rSYlqPs_T0jK6Kj1o-ZXF6iPlEbqig/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-hH8iuAZDM_4jSO1AWdW4JbOa2ZqQNUE5_ebZ_AEqfdDJSADjPkhTgXcwH_zG79_F2w/exec"
 
 @app.route('/checkin-by-barcode', methods=['GET', 'POST'])
 def checkin_by_barcode():
