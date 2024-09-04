@@ -8,7 +8,7 @@ app = Flask(__name__)
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8o0uVWqb809GKNUv7n1i5ESGLR3F8U_vTwLH7rSYlqPs_T0jK6Kj1o-ZXF6iPlEbqig/exec"
 
 # Set the check-in start date
-CHECKIN_START_DATE = datetime(2024, 9, 3, 9, 0)
+CHECKIN_START_DATE = datetime(2024, 9, 26, 9, 0)
 
 @app.route('/checkin-by-barcode', methods=['GET', 'POST'])
 def checkin_by_barcode():
