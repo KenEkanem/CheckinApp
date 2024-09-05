@@ -5,7 +5,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Your Google Apps Script URL
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8o0uVWqb809GKNUv7n1i5ESGLR3F8U_vTwLH7rSYlqPs_T0jK6Kj1o-ZXF6iPlEbqig/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIXQiGpZAFBrCd6_16jJlK5HIgtTiPBjzQwudNVomtH3_RvVtcbQ_tdNnjNJdkrdsYRQ/exec"
 
 # Set the check-in start date
 CHECKIN_START_DATE = datetime(2024, 9, 26, 9, 0)
