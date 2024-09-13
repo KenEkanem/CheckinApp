@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import requests
 from datetime import datetime
+from requests.exceptions import RequestException, SSLError, ConnectionError
 
 app = Flask(__name__)
 
@@ -39,11 +40,18 @@ def checkin_by_barcode():
             if 'error' in guest:
                 return render_template('guest_not_found.html'), 404
 
+            # Check if the guest is already checked in
+            if guest.get('time_checked_in'):
+                return render_template('already_checkedin.html', guest=guest)
+
             return render_template('checkin.html', guest=guest)
-        except Exception as e:
+        except (SSLError, ConnectionError) as e:
+            return render_template('network_error.html', error_message=str(e)), 500
+        except RequestException as e:
             return f"Error: {str(e)}", 500
 
     return render_template('email_checkin.html')
+
 
 @app.route('/checkin-by-email', methods=['GET', 'POST'])
 def checkin_by_email():
@@ -70,15 +78,28 @@ def checkin_by_email():
             if 'error' in guest:
                 return render_template('guest_not_found.html'), 404
 
+            # Check if the guest is already checked in
+            if guest.get('time_checked_in'):
+                return render_template('already_checkedin.html', guest=guest)
+
             return render_template('checkin.html', guest=guest)
-        except Exception as e:
+        except (SSLError, ConnectionError) as e:
+            return render_template('network_error.html', error_message=str(e)), 500
+        except RequestException as e:
             return f"Error: {str(e)}", 500
 
     return render_template('email_checkin.html')
 
+
 @app.route('/static/css/checkin.css')
 def css_test():
     return "Static file is accessible"
+
+# Global error handler for network errors
+@app.errorhandler(SSLError)
+@app.errorhandler(ConnectionError)
+def handle_network_error(e):
+    return render_template('network_error.html', error_message=str(e)), 500
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True, port=5003)
