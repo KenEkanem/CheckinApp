@@ -40,17 +40,29 @@ def checkin_by_barcode():
             if 'error' in guest:
                 return render_template('guest_not_found.html'), 404
 
+            # Color map to assign specific colors
+            color_map = {
+                'Planetary': '#334EAC',
+                'Red': '#FF0000',
+                'Orange': '#FFA500',
+                'Green': '#008000',
+            }
+
+            # Assign the correct color, or default to guest.xn if not found in the map
+            guest_color = color_map.get(guest.get('xn'), '#FFFFFF')  # Default color is white if not found
+
             # Check if the guest is already checked in
             if guest.get('time_checked_in'):
-                return render_template('already_checkedin.html', guest=guest)
+                return render_template('already_checkedin.html', guest=guest, guest_color=guest_color)
 
-            return render_template('checkin.html', guest=guest)
+            return render_template('checkin.html', guest=guest, guest_color=guest_color)
         except (SSLError, ConnectionError) as e:
             return render_template('network_error.html', error_message=str(e)), 500
         except RequestException as e:
             return f"Error: {str(e)}", 500
 
     return render_template('email_checkin.html')
+
 
 
 @app.route('/checkin-by-email', methods=['GET', 'POST'])
@@ -77,18 +89,29 @@ def checkin_by_email():
 
             if 'error' in guest:
                 return render_template('guest_not_found.html'), 404
+            
+            color_map = {
+                'Planetary': '#334EAC',
+                'Red': '#FF0000',        
+                'Orange': '#FFA500',     
+                'Green': '#008000',      
+            }
+
+            # Assign the correct color, or default to guest.xn if not found in the map
+            guest_color = color_map.get(guest.get('xn'), '#FFFFFF')  
 
             # Check if the guest is already checked in
             if guest.get('time_checked_in'):
                 return render_template('already_checkedin.html', guest=guest)
 
-            return render_template('checkin.html', guest=guest)
+            return render_template('checkin.html', guest=guest, guest_color=guest_color)
         except (SSLError, ConnectionError) as e:
             return render_template('network_error.html', error_message=str(e)), 500
         except RequestException as e:
             return f"Error: {str(e)}", 500
 
     return render_template('email_checkin.html')
+
 
 
 @app.route('/static/css/checkin.css')
