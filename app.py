@@ -42,7 +42,7 @@ def checkin_by_barcode():
 
             # Color map to assign specific colors
             color_map = {
-                'Planetary': '#334EAC',
+                'Blue': '#334EAC',
                 'Red': '#FF0000',
                 'Orange': '#FFA500',
                 'Green': '#008000',
@@ -91,7 +91,7 @@ def checkin_by_email():
                 return render_template('guest_not_found.html'), 404
             
             color_map = {
-                'Planetary': '#334EAC',
+                'Blue': '#334EAC',
                 'Red': '#FF0000',        
                 'Orange': '#FFA500',     
                 'Green': '#008000',      
