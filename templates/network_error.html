@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Error</title>
+    <link rel="stylesheet" href="/static/css/checkin.css">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 24px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .error-details {
+            font-size: 14px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        .btn-retry {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-retry:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Network Error</h1>
+        <p>We are currently experiencing network issues. Please try again later.</p>
+        <div class="error-details">
+            <strong>Error details:</strong> {{ error_message }}
+        </div>
+        <button class="btn-retry" onclick="window.history.back()">Retry</button>
+</body>
+</html>

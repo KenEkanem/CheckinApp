@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Already Checked In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+        }
+        p {
+            color: #555;
+            font-size: 18px;
+        }
+        .checked-in-info {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+        .btn-retry {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-retry:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Already Checked In</h1>
+        <p>Hello, you have already checked into the event.</p>
+        <div class="checked-in-info">
+            <p><strong>Name:</strong> {{ guest.name }}</p>
+            <p><strong>Email:</strong> {{ guest.email }}</p>
+            <p><strong>Unique ID:</strong> {{ guest.unique_id }}</p>
+            <p><strong>Time of Check-in:</strong> {{ guest.time_checked_in }}</p>
+        </div>
+        <div class="footer">
+            <p>Thank you for your participation!</p>
+            <button class="btn-retry" onclick="window.history.back()">Go Back</button>
+        </div>
+    </div>
+</body>
+</html>
