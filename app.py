@@ -11,6 +11,7 @@ GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyXPyQZhB6IcqVqDj-F
 # Set the check-in start date
 CHECKIN_START_DATE = datetime(2024, 9, 11, 9, 0)
 
+
 @app.route('/checkin-by-barcode', methods=['GET', 'POST'])
 def checkin_by_barcode():
     if request.method == 'GET':
