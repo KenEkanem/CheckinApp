@@ -1,3 +1,5 @@
 appscript.js
 __pycache__/
 *.pyc
+venv/
+.venv/
