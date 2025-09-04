@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 venv/
 .venv/
+.env
+node_modules/
+dist/
+.pytest_cache/
+*.db
+*.tsbuildinfo
+frontend-checkin/vite.config.js
+frontend-checkin/vite.config.d.ts
+build-history.ps1
