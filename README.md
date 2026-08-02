@@ -116,6 +116,19 @@ flask --app run import-guests ..\attendees_list.csv
 The importer is repeatable: existing and repeated email addresses are skipped,
 and stable invitation IDs are generated when the source has none.
 
+## Guest Management Studio synchronization
+
+Set `GUEST_MANAGEMENT_API_URL` to the Studio API (locally,
+`http://127.0.0.1:5004/api`). CheckinApp refreshes the selected event and guest
+directory when a booth selects an event and immediately before each check-in.
+If Studio is temporarily unavailable, the last synchronized data remains usable.
+
+Run a manual synchronization with:
+
+```powershell
+flask --app run sync-guests GATHER2026
+```
+
 ## Tests and production build
 
 ```powershell

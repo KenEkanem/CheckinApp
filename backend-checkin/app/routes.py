@@ -7,10 +7,12 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from .extensions import db
 from .models import Event, Guest
+from .sync import ManagementSyncError, notify_management_checkin, sync_event_from_management
 
 
 api = Blueprint("api", __name__, url_prefix="/api")
 EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+DEFAULT_DISPLAY_FIELDS = ["name", "email", "uniqueId", "tier", "checkedInAt"]
 
 
 def error_response(message, status, code):
@@ -54,6 +56,10 @@ def select_event():
     if not isinstance(payload, dict):
         return error_response("A JSON request body is required.", 400, "INVALID_BODY")
     try:
+        try:
+            sync_event_from_management(payload.get("eventCode"))
+        except ManagementSyncError as error:
+            current_app.logger.warning("Guest management sync unavailable: %s", error)
         event = find_event(payload.get("eventCode"))
     except SQLAlchemyError:
         current_app.logger.exception("Database error while selecting an event")
@@ -114,6 +120,10 @@ def create_checkin():
         filters.append(Guest.unique_id == unique_id)
 
     try:
+        try:
+            sync_event_from_management(payload.get("eventCode"))
+        except ManagementSyncError as error:
+            current_app.logger.warning("Guest management sync unavailable: %s", error)
         event = find_event(payload.get("eventCode"))
         if event is None:
             return error_response(
@@ -130,7 +140,13 @@ def create_checkin():
             )
 
         if guest.time_checked_in is not None:
-            return jsonify({"status": "already_checked_in", "guest": guest.to_dict()})
+            display_fields = DEFAULT_DISPLAY_FIELDS
+            try:
+                notification = notify_management_checkin(guest, event) or {}
+                display_fields = notification.get("checkinDisplayFields", display_fields)
+            except ManagementSyncError as error:
+                current_app.logger.warning("Check-in notification unavailable: %s", error)
+            return jsonify({"status": "already_checked_in", "guest": guest.to_dict(), "displayFields": display_fields})
 
         # Only the first concurrent request can change a null check-in time.
         result = db.session.execute(
@@ -142,7 +158,13 @@ def create_checkin():
         db.session.refresh(guest)
 
         status = "checked_in" if result.rowcount == 1 else "already_checked_in"
-        return jsonify({"status": status, "guest": guest.to_dict()})
+        display_fields = DEFAULT_DISPLAY_FIELDS
+        try:
+            notification = notify_management_checkin(guest, event) or {}
+            display_fields = notification.get("checkinDisplayFields", display_fields)
+        except ManagementSyncError as error:
+            current_app.logger.warning("Check-in notification unavailable: %s", error)
+        return jsonify({"status": status, "guest": guest.to_dict(), "displayFields": display_fields})
     except SQLAlchemyError:
         db.session.rollback()
         current_app.logger.exception("Database error during check-in")

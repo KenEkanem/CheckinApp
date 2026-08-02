@@ -11,6 +11,7 @@ export interface Guest {
 export interface CheckinResponse {
   status: 'checked_in' | 'already_checked_in'
   guest: Guest
+  displayFields: Array<'name' | 'email' | 'uniqueId' | 'tier' | 'checkedInAt'>
 }
 
 export interface EventDetails {

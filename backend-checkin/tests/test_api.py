@@ -15,6 +15,7 @@ def client():
             "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
             "CHECKIN_START_DATE": datetime(2000, 1, 1),
             "EVENT_CODE": "TEST2026",
+            "GUEST_MANAGEMENT_API_URL": "",
         }
     )
     with app.app_context():
@@ -46,7 +47,9 @@ def test_checkin_is_idempotent(client):
     assert first.status_code == 200
     assert first.json["status"] == "checked_in"
     assert first.json["guest"]["checkedInAt"] is not None
+    assert "checkedInAt" in first.json["displayFields"]
     assert second.json["status"] == "already_checked_in"
+    assert "checkedInAt" in second.json["displayFields"]
 
 
 def test_barcode_requires_matching_id(client):

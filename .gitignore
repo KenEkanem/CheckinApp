@@ -12,3 +12,5 @@ dist/
 frontend-checkin/vite.config.js
 frontend-checkin/vite.config.d.ts
 build-history.ps1
+server*.log
+server*.pid

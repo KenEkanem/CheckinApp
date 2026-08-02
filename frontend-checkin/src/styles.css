@@ -134,6 +134,7 @@ form label { display: block; margin: 0 0 8px; color: #334139; font-size: 12px; f
 .success-icon.repeat { color: #294955; background: #bdeaf5; box-shadow: 0 0 0 9px rgba(128,214,236,.18); }
 .result-view h2 { font-size: 30px; }
 .result-copy { max-width: 340px; margin: 0 auto 25px; color: #768078; font-size: 13px; line-height: 1.55; }
+.checkin-time { margin-top: 16px; padding-top: 13px; border-top: 1px solid rgba(35,65,21,.14); display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; }.checkin-time span { font-size: 9px; letter-spacing: 1.2px; color: #788174; }.checkin-time strong { font-size: 12px; }
 .guest-pass { padding: 20px; border-radius: 14px; text-align: left; color: white; background: #10241a; overflow: hidden; position: relative; }
 .guest-pass::after { content: ''; position: absolute; width: 100px; height: 100px; right: -40px; bottom: -60px; border: 1px solid rgba(215,255,79,.3); border-radius: 50%; }
 .pass-topline { margin-bottom: 20px; display: flex; justify-content: space-between; color: var(--acid); font-size: 9px; font-weight: 800; letter-spacing: .16em; }

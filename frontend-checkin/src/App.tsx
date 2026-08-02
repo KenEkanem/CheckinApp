@@ -305,16 +305,17 @@ function App() {
 
               <div className="guest-pass">
                 <div className="pass-topline"><span>GUEST PASS</span><ScanLine size={22} /></div>
-                <strong>{result.guest.name}</strong>
-                <span>{result.guest.email}</span>
+                {result.displayFields.includes('name') && <strong>{result.guest.name}</strong>}
+                {result.displayFields.includes('email') && <span>{result.guest.email}</span>}
                 <div className="pass-footer">
-                  <span>ID · {result.guest.uniqueId}</span>
-                  {result.guest.group && (
+                  {result.displayFields.includes('uniqueId') && <span>ID · {result.guest.uniqueId}</span>}
+                  {result.displayFields.includes('tier') && result.guest.group && (
                     <span className="group-chip" style={{ '--group-color': groupColors[result.guest.group] ?? '#d6ff50' } as React.CSSProperties}>
                       <i /> {result.guest.group} group
                     </span>
                   )}
                 </div>
+                {result.displayFields.includes('checkedInAt') && result.guest.checkedInAt && <div className="checkin-time"><span>CHECKED IN</span><strong>{new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(result.guest.checkedInAt))}</strong></div>}
               </div>
 
               <button className="secondary-button" type="button" onClick={reset}>

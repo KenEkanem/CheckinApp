@@ -2,6 +2,7 @@ import csv
 import hashlib
 import os
 from datetime import datetime
+from pathlib import Path
 
 import click
 from flask import Flask, jsonify
@@ -13,10 +14,11 @@ from .routes import api
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    local_database = (Path(__file__).resolve().parent.parent / "checkin.db").as_posix()
     app.config.from_mapping(
         SQLALCHEMY_DATABASE_URI=os.getenv(
             "DATABASE_URL",
-            "postgresql+psycopg://postgres:postgres@localhost:5432/checkin_app",
+            f"sqlite:///{local_database}",
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         CHECKIN_START_DATE=datetime.fromisoformat(
@@ -24,6 +26,10 @@ def create_app(test_config=None):
         ),
         EVENT_NAME=os.getenv("EVENT_NAME", "The Gathering 2026"),
         EVENT_CODE=os.getenv("EVENT_CODE", "GATHER2026"),
+        GUEST_MANAGEMENT_API_URL=os.getenv(
+            "GUEST_MANAGEMENT_API_URL", "http://127.0.0.1:5004/api"
+        ),
+        SYNC_TIMEOUT_SECONDS=float(os.getenv("SYNC_TIMEOUT_SECONDS", "5")),
     )
     if test_config:
         app.config.update(test_config)
@@ -106,6 +112,21 @@ def create_app(test_config=None):
         click.echo(
             f"Import complete: {created} created, {skipped_duplicate} duplicates "
             f"skipped, {skipped_invalid} invalid rows skipped."
+        )
+
+    @app.cli.command("sync-guests")
+    @click.argument("event_code")
+    def sync_guests_command(event_code):
+        """Pull an event and its current guests from Guest Management Studio."""
+        from .sync import ManagementSyncError, sync_event_from_management
+
+        try:
+            result = sync_event_from_management(event_code)
+        except ManagementSyncError as error:
+            raise click.ClickException(str(error)) from error
+        click.echo(
+            f"Synchronization complete: {result['events']} event and "
+            f"{result['guests']} guests synchronized."
         )
 
     @app.errorhandler(404)
