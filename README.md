@@ -1,6 +1,6 @@
-# Gather Check-in
+# WeGatherEvents
 
-A full-stack guest check-in application with two independent services:
+A full-stack event guest check-in platform with two independent services:
 
 - `frontend-checkin` — Vite, React, and TypeScript single-page application
 - `backend-checkin` — Flask JSON API backed by PostgreSQL

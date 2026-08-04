@@ -34,7 +34,7 @@ def find_event(value):
 
 @api.get("/health")
 def health():
-    return jsonify({"status": "ok", "service": "checkin-api"})
+    return jsonify({"status": "ok", "service": "wegatherevents-api"})
 
 
 @api.get("/config")

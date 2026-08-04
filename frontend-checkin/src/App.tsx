@@ -146,9 +146,9 @@ function App() {
       <div className="ambient ambient-two" />
 
       <nav className="topbar" aria-label="Main navigation">
-        <a className="brand" href="/" aria-label="Gather home">
+        <a className="brand" href="/" aria-label="WeGatherEvents home">
           <span className="brand-mark"><Sparkles size={19} /></span>
-          <span>gather<span className="brand-dot">.</span></span>
+          <span>wegatherevents<span className="brand-dot">.</span></span>
         </a>
         <div className="secure-label"><ShieldCheck size={15} /> Secure check-in</div>
       </nav>
@@ -325,7 +325,7 @@ function App() {
         </section>
       </section>
 
-      <footer><span>© 2026 Gather Events</span><span>Need help? Find a host in a green lanyard.</span></footer>
+      <footer><span>© 2026 WeGatherEvents</span><span>Need help? Find a host in a green lanyard.</span></footer>
     </main>
   )
 }
